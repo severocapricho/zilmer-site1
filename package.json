@@ -1,0 +1,27 @@
+{
+  "name": "zilmer-site",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "export": "next build && next export",
+    "download-images": "node scripts/download-images.js",
+    "auto-images": "node scripts/auto-download-images.js",
+    "identify-images": "node scripts/identify-images.js",
+    "get-wix-images": "node scripts/get-wix-images.js",
+    "auto-extract-wix": "node scripts/auto-extract-wix.js"
+  },
+  "dependencies": {
+    "next": "^14.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "typescript": "^5.0.0"
+  }
+}

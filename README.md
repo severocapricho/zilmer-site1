@@ -35,26 +35,36 @@ Os arquivos estáticos estarão na pasta `out/`.
 
 ## 🌐 Deploy
 
-Este site pode ser facilmente deployado em:
+### Deploy no Vercel (Recomendado)
 
-- **Vercel** (recomendado para Next.js):
-  - Conecte seu repositório GitHub
-  - O Vercel detectará automaticamente e fará o deploy
+Este projeto está configurado para deploy no **Vercel** com suporte a domínio personalizado e Cloudflare.
 
-- **Netlify**:
-  - Arraste a pasta `out/` após o build
-  - Ou conecte via Git para deploy automático
+#### Guias Disponíveis:
 
-- **GitHub Pages**:
-  - Faça o build: `npm run build`
-  - Faça upload da pasta `out/` para o GitHub Pages
+1. **`CONECTAR_GITHUB.md`** - Como conectar o projeto ao GitHub
+2. **`GUIA_MIGRACAO_VERCEL.md`** - Guia completo de migração AWS → Vercel com Cloudflare
+3. **`verificar-deploy.md`** - Checklist de verificação pré-deploy
 
-### Conectar Domínio
+#### Passos Rápidos:
 
-1. Após fazer o deploy, acesse as configurações de domínio na plataforma escolhida
-2. Adicione seu domínio personalizado
-3. Configure os registros DNS conforme as instruções da plataforma
-4. Seu site estará acessível pelo seu domínio!
+1. **Conectar ao GitHub** (veja `CONECTAR_GITHUB.md`):
+   - Criar repositório no GitHub
+   - Fazer push do código
+   
+2. **Deploy no Vercel**:
+   - Acesse https://vercel.com
+   - Conecte o repositório GitHub
+   - O Vercel detectará automaticamente Next.js e fará o deploy
+
+3. **Configurar Domínio** (veja `GUIA_MIGRACAO_VERCEL.md`):
+   - Adicione `zilmer.com.br` no Vercel
+   - Atualize DNS no Cloudflare
+   - Mantenha proteção Cloudflare ativa
+
+### Outras Plataformas
+
+- **Netlify**: Conecte via Git para deploy automático
+- **GitHub Pages**: Requer build estático (`output: 'export'` no `next.config.js`)
 
 ## 📁 Estrutura do Projeto
 

@@ -5,7 +5,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import styles from './page.module.css'
-import areasDataJson from '../../../data/areas.json'
+import areasDataJson from '@/data/areas.json'
 
 // Dados completos das áreas de aplicação
 const areasData = areasDataJson as {

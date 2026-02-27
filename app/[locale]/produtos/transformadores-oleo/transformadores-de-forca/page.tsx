@@ -39,7 +39,7 @@ export default function TransformadoresDeForcaPage() {
           
           // Converter para formato compatível com o componente
           const categories = Object.keys(categoriasData).map((key) => {
-            const categoria = categoriasData[key as keyof typeof categoriasData]
+            const categoria = categoriasData[key as keyof typeof categoriasData] as any
             return {
               id: key,
               title: categoria.title,
@@ -47,9 +47,10 @@ export default function TransformadoresDeForcaPage() {
               specifications: categoria.specifications || [],
               images: categoria.images || [],
               captions: categoria.captions || {},
-              firstImageIndex: (categoria as any).firstImageIndex !== undefined 
-                ? (categoria as any).firstImageIndex 
-                : 0,
+              firstImageIndex:
+                categoria.firstImageIndex !== undefined
+                  ? categoria.firstImageIndex
+                  : 0,
             }
           })
           
@@ -65,17 +66,18 @@ export default function TransformadoresDeForcaPage() {
           const produtosData = module.default
           const categoriasData = produtosData.oleo?.['transformadores-de-forca']?.categorias || {}
           const categories = Object.keys(categoriasData).map((key) => {
-            const categoria = categoriasData[key as keyof typeof categoriasData]
+            const categoria = categoriasData[key as keyof typeof categoriasData] as any
             return {
               id: key,
               title: categoria.title,
               description: categoria.description,
               specifications: categoria.specifications || [],
               images: categoria.images || [],
-              captions: (categoria as any).captions || {},
-              firstImageIndex: (categoria as any).firstImageIndex !== undefined 
-                ? (categoria as any).firstImageIndex 
-                : 0,
+              captions: categoria.captions || {},
+              firstImageIndex:
+                categoria.firstImageIndex !== undefined
+                  ? categoria.firstImageIndex
+                  : 0,
             }
           })
           setForceTransformerCategories(categories)

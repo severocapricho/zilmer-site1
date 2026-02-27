@@ -30,7 +30,7 @@ export default function ProductDetail({ params }: { params: { slug: string } }) 
   }
 
   // Usar imagens do JSON ou fallback vazio
-  const images = produto.images || []
+  const images = (produto as any).images || []
   // Usar legendas do JSON ou fallback vazio
   const captions = (produto as any).captions || {}
   // Usar índice da primeira imagem do JSON ou padrão 0

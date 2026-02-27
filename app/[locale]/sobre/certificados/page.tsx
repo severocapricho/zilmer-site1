@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import styles from './page.module.css'
 // @ts-ignore
-import sobreDataJson from '../../../data/sobre.json'
+import sobreDataJson from '@/data/sobre.json'
 
 // Adicione aqui os nomes dos arquivos de imagens dos certificados
 // Coloque as imagens na pasta: public/images/certificados/

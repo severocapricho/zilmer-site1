@@ -35,7 +35,26 @@ gh repo create zilmer-site --public --source=. --remote=origin --push
 
 Após criar o repositório no GitHub, você verá uma página com instruções. Use uma das opções abaixo:
 
-### Opção A: Se o repositório está VAZIO no GitHub
+### Opção A: Repositório no GitHub = `zilmer-site1` (pasta local = zilmer-site)
+
+**Jeito mais fácil:** dê dois cliques no arquivo **`push-github.bat`** na raiz do projeto. Ele vai pedir seu usuário do GitHub e enviar tudo.
+
+**Ou no CMD** (abra o CMD, vá na pasta do projeto e rode):
+
+```cmd
+cd c:\Users\rocco.digiulio\Desktop\zilmer-site
+
+git remote remove origin
+git remote add origin https://github.com/SEU_USUARIO/zilmer-site1.git
+
+git push -u origin main
+```
+
+Substitua **SEU_USUARIO** pelo seu usuário do GitHub (ex: `rocco.digiulio`).
+
+---
+
+### Opção B: Se o repositório no GitHub tiver outro nome (ex: zilmer-site)
 
 Execute estes comandos no terminal (na pasta do projeto):
 

@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import styles from './page.module.css'
 // @ts-ignore
-import sobreDataJson from '../../../data/sobre.json'
+import sobreDataJson from '@/data/sobre.json'
 
 const sobreData = sobreDataJson as {
   clientes: {

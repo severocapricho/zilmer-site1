@@ -4,6 +4,7 @@
   position: sticky;
   top: 0;
   z-index: 1000;
+  width: 100%;
 }
 
 .container {
@@ -13,11 +14,17 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 80px;
+  height: 90px;
 }
 
-.logo img {
-  height: 50px;
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo img,
+.logo :global(img) {
+  height: 65px;
   width: auto;
 }
 
@@ -36,6 +43,11 @@
   letter-spacing: 0.5px;
   transition: color 0.3s ease;
   cursor: pointer;
+}
+
+.dropdownTrigger {
+  display: inline-block;
+  user-select: none;
 }
 
 .nav a:hover,
@@ -68,7 +80,7 @@
   border-radius: 4px;
   display: flex;
   flex-direction: column;
-  z-index: 100;
+  z-index: 1001;
 }
 
 .dropdownMenu a {

@@ -6,8 +6,7 @@ export const routing = defineRouting({
   locales: ['pt', 'en'],
 
   // Used when no locale matches
-  defaultLocale: 'pt'
-
+  defaultLocale: 'pt',
   // Removed pathnames configuration to use same folder structure for both languages
   // This ensures dynamic routes work correctly in both languages
   // Content translation is handled by the translation files, not by URL structure

@@ -9,7 +9,8 @@ import { unstable_noStore as noStore } from 'next/cache'
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
-export default function ProductDetail({ params }: { params: { slug: string } }) {
+export default async function ProductDetail({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
   // Desabilitar cache para garantir dados sempre atualizados
   noStore()
   // Mapear slugs para chaves do JSON
@@ -23,7 +24,7 @@ export default function ProductDetail({ params }: { params: { slug: string } }) 
     'reatores': 'reatores',
   }
 
-  const produtoKey = slugToKey[params.slug]
+  const produtoKey = slugToKey[slug]
   const produtos = produtosData.oleo?.produtos
   const produto = produtoKey && produtos && produtoKey in produtos ? produtos[produtoKey as keyof typeof produtos] : null
 

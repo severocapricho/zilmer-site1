@@ -2,7 +2,7 @@
 
 import { use } from 'react'
 import Image from 'next/image'
-import Link from 'next/link'
+import { Link } from '@/i18n/routing'
 import styles from './page.module.css'
 
 interface Noticia {

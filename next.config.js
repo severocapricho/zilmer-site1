@@ -4,11 +4,19 @@ const withNextIntl = createNextIntlPlugin('./i18n/request.ts')
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  experimental: {
+    serverComponentsExternalPackages: ['sharp'],
+    outputFileTracingExcludes: {
+      '/api/admin/produtos/upload': ['public/**', '.next/cache/**'],
+      '/api/admin/produtos': ['public/**', '.next/cache/**'],
+      '/api/admin/produtos/images': ['public/**', '.next/cache/**'],
+      '/api/admin/areas': ['public/**', '.next/cache/**'],
+      '/api/admin/sobre': ['public/**', '.next/cache/**'],
+    },
+  },
   // output: 'export', // Desabilitado para desenvolvimento (habilite apenas para build de produção)
   images: {
-    // Otimização de imagens habilitada para melhor performance
-    // Em produção, o Next.js otimiza automaticamente as imagens
-    unoptimized: process.env.NODE_ENV === 'development' ? true : false,
+    unoptimized: true,
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],

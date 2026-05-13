@@ -43,7 +43,7 @@ export default async function ClientesPage() {
           {clientes.length > 0 ? (
             <div className={styles.imageContainer}>
               <Image
-                src={cdnUrl(`/images/clientes/${clientes[0]}`)}
+                src={`/images/clientes/${clientes[0]}`}
                 alt="Nossos Clientes"
                 width={1200}
                 height={800}

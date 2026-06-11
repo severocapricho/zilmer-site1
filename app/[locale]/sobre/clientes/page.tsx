@@ -9,41 +9,32 @@ import sobreDataEn from '@/data/sobre.en.json'
 import sobreDataEs from '@/data/sobre.es.json'
 import { getLocale } from 'next-intl/server'
 
-// Adicione aqui os nomes dos arquivos de imagens dos clientes
-// Coloque as imagens na pasta: public/images/clientes/
-const clientes = [
-  'logo-clientes-1.jpg',
-]
-
-// Helper para renderizar texto com ou sem HTML
 function renderText(text: string | undefined | null) {
   if (!text) return <p></p>
-  
   const hasHTML = /<[^>]+>/.test(text)
-  
-  if (hasHTML) {
-    return <div dangerouslySetInnerHTML={{ __html: text }} />
-  }
-  
+  if (hasHTML) return <div dangerouslySetInnerHTML={{ __html: text }} />
   return <p>{text}</p>
 }
 
 export default async function ClientesPage() {
   const locale = await getLocale()
   const sobreData = (locale === 'en' ? sobreDataEn : locale === 'es' ? sobreDataEs : sobreDataPt) as {
-    clientes: { title: string; description: string }
+    clientes: { title: string; description: string; image?: string }
   }
+  const { clientes } = sobreData
+  const imagePath = clientes.image || null
+
   return (
     <section className={styles.page}>
       <div className="container">
-        <h1>{sobreData.clientes.title}</h1>
+        <h1>{clientes.title}</h1>
         <div className={styles.content}>
-          {renderText(sobreData.clientes.description)}
-          
-          {clientes.length > 0 ? (
+          {renderText(clientes.description)}
+
+          {imagePath ? (
             <div className={styles.imageContainer}>
               <Image
-                src={cdnUrl(`/images/clientes/${clientes[0]}`)}
+                src={cdnUrl(imagePath)}
                 alt="Nossos Clientes"
                 width={1200}
                 height={800}
@@ -53,9 +44,7 @@ export default async function ClientesPage() {
             </div>
           ) : (
             <div className={styles.placeholder}>
-              <p>📁 Adicione as imagens dos logos dos clientes na pasta:</p>
-              <p className={styles.path}><code>public/images/clientes/</code></p>
-              <p>E depois adicione os nomes dos arquivos no array <code>clientes</code> neste arquivo.</p>
+              <p>Adicione a imagem dos clientes pelo painel admin em <strong>Sobre → Clientes → Imagem dos Clientes</strong>.</p>
             </div>
           )}
         </div>
@@ -63,6 +52,3 @@ export default async function ClientesPage() {
     </section>
   )
 }
-
-
-

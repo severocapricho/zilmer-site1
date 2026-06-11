@@ -6,6 +6,7 @@ import sobreDataPt from '@/data/sobre.json'
 import sobreDataEn from '@/data/sobre.en.json'
 // @ts-ignore
 import sobreDataEs from '@/data/sobre.es.json'
+import { cdnUrl } from '@/lib/assets'
 import { getLocale } from 'next-intl/server'
 
 function stripHtml(text: string): string {
@@ -28,29 +29,32 @@ function renderText(text: string | undefined | null) {
 export default async function HistoricoPage() {
   const locale = await getLocale()
   const sobreData = (locale === 'en' ? sobreDataEn : locale === 'es' ? sobreDataEs : sobreDataPt) as {
-    historico: { title: string; subtitle: string; content: string }
+    historico: { title: string; subtitle: string; content: string; image?: string; imageCaption?: string }
   }
+  const { historico } = sobreData
+  const imagePath = historico.image || '/images/sobre/historico.jpg'
+  const imageCaption = historico.imageCaption || 'ZILMER - 1962'
+
   return (
     <section className={styles.page}>
       <div className="container">
-        <h1>{sobreData.historico.title}</h1>
+        <h1>{historico.title}</h1>
         <div className={styles.content}>
-          <h2>{sobreData.historico.subtitle}</h2>
-          {renderText(sobreData.historico.content)}
+          <h2>{historico.subtitle}</h2>
+          {renderText(historico.content)}
         </div>
 
         <figure className={styles.historicPhotoSection}>
           <Image
-            src="/images/sobre/historico.jpg"
+            src={cdnUrl(imagePath)}
             alt="Zilmer - Acervo Histórico"
             width={1085}
             height={1450}
             className={styles.historicImage}
           />
-          <figcaption className={styles.historicCaption}>ZILMER - 1962</figcaption>
+          <figcaption className={styles.historicCaption}>{imageCaption}</figcaption>
         </figure>
       </div>
     </section>
   )
 }
-

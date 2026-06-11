@@ -9,78 +9,55 @@ import sobreDataEn from '@/data/sobre.en.json'
 import sobreDataEs from '@/data/sobre.es.json'
 import { getLocale } from 'next-intl/server'
 
-// Adicione aqui os nomes dos arquivos de imagens dos certificados
-// Coloque as imagens na pasta: public/images/certificados/
-// Suporta PDF e imagens (JPG, PNG, etc.)
-const certificados = [
-  {
-    file: 'CERTIFICADO ISO.pdf',
-    title: 'Certificado ISO',
-    type: 'pdf'
-  },
-  {
-    file: 'CERTIFICADO LMP.pdf',
-    title: 'Certificado LMP',
-    type: 'pdf'
-  },
-  {
-    file: 'CERTIFICADO PROELCO.pdf',
-    title: 'Certificado PROELCO',
-    type: 'pdf'
-  },
-]
+interface CertificadoItem { file: string; title: string; type: string }
 
-
-// Helper para renderizar texto com ou sem HTML
 function renderText(text: string | undefined | null) {
   if (!text) return <p></p>
-  
   const hasHTML = /<[^>]+>/.test(text)
-  
-  if (hasHTML) {
-    return <div dangerouslySetInnerHTML={{ __html: text }} />
-  }
-  
+  if (hasHTML) return <div dangerouslySetInnerHTML={{ __html: text }} />
   return <p>{text}</p>
 }
 
 export default async function CertificadosPage() {
   const locale = await getLocale()
   const sobreData = (locale === 'en' ? sobreDataEn : locale === 'es' ? sobreDataEs : sobreDataPt) as {
-    certificados: { title: string; description: string }
+    certificados: { title: string; description: string; items?: CertificadoItem[] }
   }
-  const openPdfLabel = locale === 'en' ? 'Open PDF' : locale === 'es' ? 'Abrir PDF' : 'Abrir PDF'
+  const { certificados } = sobreData
+  const items: CertificadoItem[] = certificados.items || []
+  const openPdfLabel = locale === 'en' ? 'Open PDF' : 'Abrir PDF'
+
   return (
     <section className={styles.page}>
       <div className="container">
-        <h1>{sobreData.certificados.title}</h1>
+        <h1>{certificados.title}</h1>
         <div className={styles.content}>
-          {renderText(sobreData.certificados.description)}
-          
-          {certificados.length > 0 ? (
+          {renderText(certificados.description)}
+
+          {items.length > 0 ? (
             <div className={styles.gallery}>
-              {certificados.map((certificado, index) => (
+              {items.map((item, index) => (
                 <div key={index} className={styles.certificadoCard}>
-                  {certificado.type === 'pdf' ? (
+                  {item.type === 'pdf' ? (
                     <div className={styles.pdfContainer}>
                       <iframe
-                        src={cdnUrl(`/images/certificados/${certificado.file}`)}
+                        src={cdnUrl(`/images/certificados/${item.file}`)}
                         className={styles.pdfViewer}
-                        title={certificado.title}
+                        title={item.title}
                       />
                       <a
-                        href={cdnUrl(`/images/certificados/${certificado.file}`)}
+                        href={cdnUrl(`/images/certificados/${item.file}`)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className={styles.pdfLink}
                       >
-                        {certificado.title} ({openPdfLabel})
+                        {item.title} ({openPdfLabel})
                       </a>
                     </div>
                   ) : (
                     <Image
-                      src={cdnUrl(`/images/certificados/${certificado.file}`)}
-                      alt={certificado.title || `Certificado ${index + 1}`}
+                      src={cdnUrl(`/images/certificados/${item.file}`)}
+                      alt={item.title || `Certificado ${index + 1}`}
                       width={400}
                       height={560}
                       className={styles.certificadoImage}
@@ -91,9 +68,7 @@ export default async function CertificadosPage() {
             </div>
           ) : (
             <div className={styles.placeholder}>
-              <p>📁 Adicione as imagens dos certificados na pasta:</p>
-              <p className={styles.path}><code>public/images/certificados/</code></p>
-              <p>E depois adicione os nomes dos arquivos no array <code>certificados</code> neste arquivo.</p>
+              <p>Adicione certificados pelo painel admin em <strong>Sobre → Certificados → Certificados (PDFs / Imagens)</strong>.</p>
             </div>
           )}
         </div>
@@ -101,6 +76,3 @@ export default async function CertificadosPage() {
     </section>
   )
 }
-
-
-

@@ -25,20 +25,40 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { section, field, value } = body as {
+    const { action, section, field, value, index } = body as {
+      action?: string
       section?: string
       field?: string
       value?: unknown
+      index?: number
+    }
+
+    const data = await loadSobre()
+
+    // Array actions for certificados items
+    if (action === 'addCertificado') {
+      data.certificados.items = data.certificados.items || []
+      data.certificados.items.push(value)
+      await writeFile(SOBRE_PATH, JSON.stringify(data, null, 2), 'utf-8')
+      return NextResponse.json(data)
+    }
+
+    if (action === 'removeCertificado') {
+      data.certificados.items = data.certificados.items || []
+      if (index === undefined || index < 0 || index >= data.certificados.items.length) {
+        return NextResponse.json({ error: 'Índice inválido' }, { status: 400 })
+      }
+      data.certificados.items.splice(index, 1)
+      await writeFile(SOBRE_PATH, JSON.stringify(data, null, 2), 'utf-8')
+      return NextResponse.json(data)
     }
 
     if (!section || !field) {
       return NextResponse.json(
-        { error: 'Parâmetros \"section\" e \"field\" são obrigatórios' },
+        { error: 'Parâmetros "section" e "field" são obrigatórios' },
         { status: 400 }
       )
     }
-
-    const data = await loadSobre()
 
     if (!data[section]) {
       return NextResponse.json(
@@ -47,7 +67,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Navegar até o campo solicitado (ex: "cards.historico.title")
+    // Navigate dot-notation path within the section (e.g. "cards.historico.title")
     const path = field.split('.')
     let target: any = data[section]
 
@@ -63,7 +83,6 @@ export async function POST(request: NextRequest) {
     target[lastKey] = value
 
     await writeFile(SOBRE_PATH, JSON.stringify(data, null, 2), 'utf-8')
-
     return NextResponse.json(data)
   } catch (error: any) {
     console.error('Erro ao atualizar sobre.json:', error)
@@ -73,4 +92,3 @@ export async function POST(request: NextRequest) {
     )
   }
 }
-

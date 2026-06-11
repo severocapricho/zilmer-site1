@@ -47,7 +47,7 @@ export default async function ProductDetail({ params }: { params: Promise<{ slug
     : 0
   const catalogConfig: { [key: string]: { file: string; titlePt: string; titleEn: string; titleEs: string; descPt: string; descEn: string; descEs: string } } = {
     'baixa-tensao': {
-      file: '/catalogos/TRANSFORMADORES A SECO BT.pdf',
+      file: '/catalogos/TRANSFORMADORES-A-SECO-BT.pdf',
       titlePt: 'Catálogo Transformadores a Seco BT',
       titleEn: 'Dry-Type LV Transformers Catalogue',
       titleEs: 'Catálogo Transformadores en Seco BT',
@@ -56,7 +56,7 @@ export default async function ProductDetail({ params }: { params: Promise<{ slug
       descEs: 'Especificaciones técnicas y Plano Dimensional Orientativo',
     },
     'media-tensao': {
-      file: '/catalogos/TRANSFORMADORES A SECO MT.pdf',
+      file: '/catalogos/TRANSFORMADORES-A-SECO-MT.pdf',
       titlePt: 'Catálogo Transformadores a Seco MT',
       titleEn: 'Dry-Type MV Transformers Catalogue',
       titleEs: 'Catálogo Transformadores en Seco MT',

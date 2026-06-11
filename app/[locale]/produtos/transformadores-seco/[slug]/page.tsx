@@ -45,19 +45,39 @@ export default async function ProductDetail({ params }: { params: Promise<{ slug
   const firstImageIndex = (produto as any).firstImageIndex !== undefined 
     ? (produto as any).firstImageIndex 
     : 0
-  const hasPdf = slug === 'baixa-tensao'
+  const catalogConfig: { [key: string]: { file: string; titlePt: string; titleEn: string; titleEs: string; descPt: string; descEn: string; descEs: string } } = {
+    'baixa-tensao': {
+      file: '/catalogos/TRANSFORMADORES A SECO BT.pdf',
+      titlePt: 'Catálogo Transformadores a Seco BT',
+      titleEn: 'Dry-Type LV Transformers Catalogue',
+      titleEs: 'Catálogo Transformadores en Seco BT',
+      descPt: 'Especificações técnicas e Desenho Dimensional Orientativo',
+      descEn: 'Technical specifications and Indicative Dimensional Drawing',
+      descEs: 'Especificaciones técnicas y Plano Dimensional Orientativo',
+    },
+    'media-tensao': {
+      file: '/catalogos/TRANSFORMADORES A SECO MT.pdf',
+      titlePt: 'Catálogo Transformadores a Seco MT',
+      titleEn: 'Dry-Type MV Transformers Catalogue',
+      titleEs: 'Catálogo Transformadores en Seco MT',
+      descPt: 'Especificações técnicas e Desenho Dimensional Orientativo',
+      descEn: 'Technical specifications and Indicative Dimensional Drawing',
+      descEs: 'Especificaciones técnicas y Plano Dimensional Orientativo',
+    },
+  }
+  const catalog = catalogConfig[slug]
 
   return (
     <section className={styles.page}>
       <div className="container">
         <h1 className={styles.title}>{produto.title}</h1>
-        
+
         <div className={styles.content}>
           {images.length > 0 && (
             <div className={styles.gallerySection}>
-              <ImageGallery 
-                images={images} 
-                alt={produto.title} 
+              <ImageGallery
+                images={images}
+                alt={produto.title}
                 captions={captions}
                 firstImageIndex={firstImageIndex}
               />
@@ -76,18 +96,18 @@ export default async function ProductDetail({ params }: { params: Promise<{ slug
               <ContactButton />
             </div>
 
-            {hasPdf && (
+            {catalog && (
               <div className={styles.pdfDownloadSection}>
                 <div className={styles.pdfCard}>
                   <div className={styles.pdfIcon}>📄</div>
                   <div className={styles.pdfInfo}>
-                    <h3 className={styles.pdfTitle}>{locale === 'en' ? 'TAI and TCI Catalogue' : locale === 'es' ? 'Catálogo TAI y TCI' : 'Catálogo TAI e TCI'}</h3>
+                    <h3 className={styles.pdfTitle}>{locale === 'en' ? catalog.titleEn : locale === 'es' ? catalog.titleEs : catalog.titlePt}</h3>
                     <p className={styles.pdfDescription}>
-                      {locale === 'en' ? 'Technical specifications and Indicative Dimensional Drawing' : locale === 'es' ? 'Especificaciones técnicas y Plano Dimensional Orientativo' : 'Especificações técnicas e Desenho Dimensional Orientativo'}
+                      {locale === 'en' ? catalog.descEn : locale === 'es' ? catalog.descEs : catalog.descPt}
                     </p>
                   </div>
                   <a
-                    href={cdnUrl("/catalogos/CATALOGO-TAI-e-TCI.pdf")}
+                    href={cdnUrl(catalog.file)}
                     download
                     className={styles.downloadButton}
                   >

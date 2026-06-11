@@ -1,0 +1,48 @@
+{
+  "tagline": {
+    "pt": "TECNOLOGIA ZILMER",
+    "en": "ZILMER TECHNOLOGY",
+    "es": "TECNOLOGÍA ZILMER"
+  },
+  "headline": {
+    "pt": "ENGENHARIA",
+    "en": "PRECISION",
+    "es": "INGENIERÍA"
+  },
+  "accentWord": {
+    "pt": "DE PRECISÃO",
+    "en": "ENGINEERING",
+    "es": "DE PRECISIÓN"
+  },
+  "subtitle": {
+    "pt": "Cada transformador é projetado com rigor técnico absoluto. Componentes internos selecionados ao milímetro, testados sob as normas mais exigentes para garantir décadas de operação confiável.",
+    "en": "Each transformer is engineered with absolute technical rigour. Internal components selected to the millimetre, tested under the most demanding standards to guarantee decades of reliable operation.",
+    "es": "Cada transformador es diseñado con rigor técnico absoluto. Componentes internos seleccionados al milímetro, probados bajo las normas más exigentes para garantizar décadas de operación confiable."
+  },
+  "stats": [
+    {
+      "number": "60+",
+      "label": {
+        "pt": "anos de experiência",
+        "en": "years of experience",
+        "es": "años de experiencia"
+      }
+    },
+    {
+      "number": "ISO",
+      "label": {
+        "pt": "certificação internacional",
+        "en": "international certification",
+        "es": "certificación internacional"
+      }
+    },
+    {
+      "number": "100%",
+      "label": {
+        "pt": "testado em fábrica",
+        "en": "factory tested",
+        "es": "probado en fábrica"
+      }
+    }
+  ]
+}

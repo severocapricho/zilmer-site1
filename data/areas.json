@@ -5,7 +5,7 @@
       "title": "Aplicação em Sistemas de Transporte",
       "description": "Transformadores de Retificação\n\nOs transformadores retificadores a seco moldados em resina epóxi representam a solução ideal para aplicações que demandam alta confiabilidade, robustez térmica e segurança operacional, especialmente em ambientes onde o uso de óleo não é desejável. Projetados para alimentar circuitos retificadores semicondutores de 6 até 24 pulsos, esses transformadores enfrentam condições elétricas mais severas que as encontradas em transformadores convencionais, devido à presença de harmônicas de alta frequência geradas pelo processo de conversão AC–DC. A operação dos dispositivos semicondutores introduz componentes harmônicas que elevam significativamente as perdas por correntes parasitas (eddy currents) e perdas dispersas, provocando aquecimento adicional nos enrolamentos e estruturas metálicas do transformador. Diante desse cenário, o transformador a seco em resina epóxi precisa ser concebido com um conjunto de refinamentos eletromagnéticos e térmicos que assegurem estabilidade e longevidade do equipamento. Entre os principais elementos de projeto adotados pela Zilmer Ineltec, destacam-se: Redução de densidade de fluxo magnético, diminuindo as perdas adicionais provocadas pelos harmônicos; Controle rigoroso da densidade de corrente nos condutores, evitando aquecimento excessivo em regime de cargas pulsantes; Blindagem eletrostática entre enrolamentos, atenuando interferências de alta frequência e protegendo componentes sensíveis do sistema retificador; Enrolamentos moldados em resina epóxi classe F ou H, que proporcionam excelente condução térmica, elevada rigidez dielétrica e resistência superior a ambientes contaminados, úmidos ou com atmosfera corrosiva; Projeto a seco naturalmente mais seguro, eliminando riscos relacionados a vazamentos, combustibilidade do óleo e reduzindo necessidades de manutenção. Essas características garantem que o transformador retificador a seco entregue confiabilidade e desempenho consistente, mesmo sob solicitações não lineares típicas de aplicações industriais intensivas, como eletrólise, acionamentos de velocidade variável, fornos elétricos, mineração, sistemas de tração e outros processos que requerem corrente contínua de alta qualidade.",
       "image": "/images/areas/transporte/hf_20260204_180552_5d7deabf-613d-4c8e-8948-360df6ea8825.webp",
-      "heroImage": "/images/areas/transporte.webp",
+      "heroImage": "/images/areas/transporte.jpg",
       "heroDescription": "Os transformadores Zilmer são fundamentais na infraestrutura de transporte metroviário, fornecendo energia confiável para sistemas críticos de mobilidade urbana.",
       "imageCaption": "TRANSFORMADOR RETIFICADOR TRIFÁSICO"
     },
@@ -19,12 +19,12 @@
       {
         "title": "Sistema de Tração Metroviário",
         "description": "Transformadores de tração instalados em linha de metrô, fornecendo energia para múltiplas composições simultaneamente.",
-        "image": "/images/areas/transporte.webp"
+        "image": "/images/areas/transporte.jpg"
       },
       {
         "title": "Sinalização Ferroviária",
         "description": "Equipamentos especializados para alimentação de sistemas de sinalização e controle de tráfego.",
-        "image": "/images/areas/transporte.webp"
+        "image": "/images/areas/transporte.jpg"
       }
     ]
   },
@@ -36,7 +36,7 @@
       "onde": "Instalados em casas de força, subestações de geração e sistemas de transmissão de energia.",
       "como": "Transformam a energia gerada pelas turbinas para níveis de tensão adequados à transmissão e distribuição.",
       "image": "/images/areas/hidreletrica/hf_20260204_170703_8f0f246e-0e78-489a-b931-68934db44f33.webp",
-      "heroImage": "/images/areas/hidreletrica.webp",
+      "heroImage": "/images/areas/hidreletrica.jpg",
       "heroDescription": "Transformadores de alta potência essenciais para geração e transmissão de energia hidrelétrica.",
       "imageCaption": "TRANSFORMADOR DE EXCITAÇÃO (BANCO TRIFÁSICO)"
     },
@@ -50,12 +50,12 @@
       {
         "title": "Transformadores de Geração",
         "description": "Equipamentos de alta potência para elevação de tensão em usinas hidrelétricas de grande porte.",
-        "image": "/images/areas/hidreletrica.webp"
+        "image": "/images/areas/hidreletrica.jpg"
       },
       {
         "title": "Sistemas Auxiliares",
         "description": "Transformadores para alimentação de sistemas auxiliares e controle das usinas.",
-        "image": "/images/areas/hidreletrica.webp"
+        "image": "/images/areas/hidreletrica.jpg"
       }
     ]
   },
@@ -98,7 +98,7 @@
       "onde": "Instalados em subestações de distribuição, transmissão e transformação de energia elétrica.",
       "como": "Transformam tensões entre diferentes níveis, permitindo distribuição eficiente de energia para consumidores.",
       "image": "/images/areas/subestacoes/RAO - VILLARES METALS - 1350 kVA - CENÁRIO.webp",
-      "heroImage": "/images/areas/subestacoes.webp",
+      "heroImage": "/images/areas/subestacoes.jpg",
       "heroDescription": "Transformadores essenciais para distribuição e transmissão de energia em subestações.",
       "imageCaption": "REATOR DE ATERRAMENTO ZIG ZAG"
     },
@@ -112,12 +112,12 @@
       {
         "title": "Subestações de Distribuição",
         "description": "Transformadores para redução de tensão em subestações urbanas e rurais.",
-        "image": "/images/areas/subestacoes.webp"
+        "image": "/images/areas/subestacoes.jpg"
       },
       {
         "title": "Sistemas de Transmissão",
         "description": "Equipamentos de alta tensão para transmissão de energia entre regiões.",
-        "image": "/images/areas/subestacoes.webp"
+        "image": "/images/areas/subestacoes.jpg"
       }
     ]
   },
@@ -164,7 +164,7 @@
         "/images/areas/controle-medicao/WhatsApp Image 2026-02-03 at 13.45.43.jpeg",
         "/images/areas/controle-medicao/WhatsApp Image 2026-02-03 at 13.48.19.jpeg"
       ],
-      "heroImage": "/images/areas/controle-medicao.webp",
+      "heroImage": "/images/areas/controle-medicao.jpg",
       "heroDescription": "Transformadores de instrumentos (potencial e corrente) para proteção, controle e medição em instalações elétricas.",
       "imageCaption": "TRANSFORMADORES DE CORRENTE (TC) DE USO EXTERNO",
       "imageCaptions": [
@@ -182,12 +182,12 @@
       {
         "title": "Sistemas de Proteção",
         "description": "Transformadores de corrente e potencial para relés de proteção e sistemas de segurança.",
-        "image": "/images/areas/controle-medicao.webp"
+        "image": "/images/areas/controle-medicao.jpg"
       },
       {
         "title": "Medição de Energia",
         "description": "Equipamentos para medição precisa de consumo e qualidade de energia elétrica.",
-        "image": "/images/areas/controle-medicao.webp"
+        "image": "/images/areas/controle-medicao.jpg"
       }
     ]
   }

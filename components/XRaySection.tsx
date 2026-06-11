@@ -1,15 +1,49 @@
 'use client'
 
-import { useRef, useState, useCallback } from 'react'
+import { useRef, useState, useCallback, useEffect } from 'react'
 import styles from './XRaySection.module.css'
 import { useLocale } from 'next-intl'
 import { cdnUrl } from '@/lib/assets'
+
+interface LocalizedText { pt: string; en: string; es: string }
+interface XrayStat { number: string; label: LocalizedText }
+interface XrayData {
+  tagline: LocalizedText
+  headline: LocalizedText
+  accentWord: LocalizedText
+  subtitle: LocalizedText
+  stats: XrayStat[]
+}
+
+const DEFAULT_DATA: XrayData = {
+  tagline: { pt: 'TECNOLOGIA ZILMER', en: 'ZILMER TECHNOLOGY', es: 'TECNOLOGÍA ZILMER' },
+  headline: { pt: 'ENGENHARIA', en: 'PRECISION', es: 'INGENIERÍA' },
+  accentWord: { pt: 'DE PRECISÃO', en: 'ENGINEERING', es: 'DE PRECISIÓN' },
+  subtitle: {
+    pt: 'Cada transformador é projetado com rigor técnico absoluto. Componentes internos selecionados ao milímetro, testados sob as normas mais exigentes para garantir décadas de operação confiável.',
+    en: 'Each transformer is engineered with absolute technical rigour. Internal components selected to the millimetre, tested under the most demanding standards to guarantee decades of reliable operation.',
+    es: 'Cada transformador es diseñado con rigor técnico absoluto. Componentes internos seleccionados al milímetro, probados bajo las normas más exigentes para garantizar décadas de operación confiable.',
+  },
+  stats: [
+    { number: '60+', label: { pt: 'anos de experiência', en: 'years of experience', es: 'años de experiencia' } },
+    { number: 'ISO', label: { pt: 'certificação internacional', en: 'international certification', es: 'certificación internacional' } },
+    { number: '100%', label: { pt: 'testado em fábrica', en: 'factory tested', es: 'probado en fábrica' } },
+  ],
+}
 
 export default function XRaySection() {
   const locale = useLocale()
   const containerRef = useRef<HTMLDivElement>(null)
   const [cursor, setCursor] = useState({ x: 0, y: 0 })
   const [isHovering, setIsHovering] = useState(false)
+  const [xrayData, setXrayData] = useState<XrayData>(DEFAULT_DATA)
+
+  useEffect(() => {
+    fetch('/api/admin/xray')
+      .then(r => r.ok ? r.json() : null)
+      .then(d => { if (d) setXrayData(d) })
+      .catch(() => {})
+  }, [])
 
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     const rect = containerRef.current?.getBoundingClientRect()
@@ -18,47 +52,34 @@ export default function XRaySection() {
   }, [])
 
   const handleMouseEnter = useCallback(() => setIsHovering(true), [])
-  const handleMouseLeave = useCallback(() => {
-    setIsHovering(false)
-  }, [])
+  const handleMouseLeave = useCallback(() => { setIsHovering(false) }, [])
 
   const mask = isHovering
     ? `radial-gradient(circle 150px at ${cursor.x}px ${cursor.y}px, black 0%, black 60%, transparent 100%)`
     : 'none'
+
+  const lang: keyof LocalizedText = locale === 'en' ? 'en' : locale === 'es' ? 'es' : 'pt'
 
   return (
     <section className={styles.section}>
       <div className={styles.inner}>
         {/* Left: text */}
         <div className={styles.textSide}>
-          <div className={styles.tagline}>{locale === 'en' ? 'ZILMER TECHNOLOGY' : locale === 'es' ? 'TECNOLOGÍA ZILMER' : 'TECNOLOGIA ZILMER'}</div>
+          <div className={styles.tagline}>{xrayData.tagline[lang]}</div>
           <h2 className={styles.headline}>
-            {locale === 'en' ? 'PRECISION' : locale === 'es' ? 'INGENIERÍA' : 'ENGENHARIA'}<br />
-            <span className={styles.accentWord}>{locale === 'en' ? 'ENGINEERING' : locale === 'es' ? 'DE PRECISIÓN' : 'DE PRECISÃO'}</span>
+            {xrayData.headline[lang]}<br />
+            <span className={styles.accentWord}>{xrayData.accentWord[lang]}</span>
           </h2>
-          <p className={styles.subtitle}>
-            {locale === 'en'
-              ? 'Each transformer is engineered with absolute technical rigour. Internal components selected to the millimetre, tested under the most demanding standards to guarantee decades of reliable operation.'
-              : locale === 'es'
-              ? 'Cada transformador es diseñado con rigor técnico absoluto. Componentes internos seleccionados al milímetro, probados bajo las normas más exigentes para garantizar décadas de operación confiable.'
-              : 'Cada transformador é projetado com rigor técnico absoluto. Componentes internos selecionados ao milímetro, testados sob as normas mais exigentes para garantir décadas de operação confiável.'}
-          </p>
+          <p className={styles.subtitle}>{xrayData.subtitle[lang]}</p>
 
           <div className={styles.statsRow}>
-            <div className={styles.stat}>
-              <span className={styles.statNumber}>60+</span>
-              <span className={styles.statLabel}>{locale === 'en' ? 'years of experience' : locale === 'es' ? 'años de experiencia' : 'anos de experiência'}</span>
-            </div>
-            <div className={styles.statDivider} />
-            <div className={styles.stat}>
-              <span className={styles.statNumber}>ISO</span>
-              <span className={styles.statLabel}>{locale === 'en' ? 'international certification' : locale === 'es' ? 'certificación internacional' : 'certificação internacional'}</span>
-            </div>
-            <div className={styles.statDivider} />
-            <div className={styles.stat}>
-              <span className={styles.statNumber}>100%</span>
-              <span className={styles.statLabel}>{locale === 'en' ? 'factory tested' : locale === 'es' ? 'probado en fábrica' : 'testado em fábrica'}</span>
-            </div>
+            {xrayData.stats.flatMap((stat, i) => [
+              i > 0 ? <div key={`div-${i}`} className={styles.statDivider} /> : null,
+              <div key={`stat-${i}`} className={styles.stat}>
+                <span className={styles.statNumber}>{stat.number}</span>
+                <span className={styles.statLabel}>{stat.label[lang]}</span>
+              </div>,
+            ])}
           </div>
         </div>
 
@@ -109,7 +130,6 @@ export default function XRaySection() {
 
             {/* Scan line animation */}
             <div className={`${styles.scanLine} ${isHovering ? styles.scanLineActive : ''}`} />
-
           </div>
         </div>
       </div>

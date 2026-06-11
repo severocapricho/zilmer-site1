@@ -185,6 +185,10 @@ export default function AdminPage() {
           <a href="/admin/noticias" style={{ color: '#6ba3f0', textDecoration: 'none', fontWeight: 600 }}>
             → Editar Notícias
           </a>
+          {' | '}
+          <a href="/admin/xray" style={{ color: '#6ba3f0', textDecoration: 'none', fontWeight: 600 }}>
+            → Editar Seção X-Ray
+          </a>
         </div>
       </div>
 

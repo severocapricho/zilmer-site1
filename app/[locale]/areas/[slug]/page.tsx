@@ -82,6 +82,18 @@ export default function AreaPage({ params }: { params: { slug: string } }) {
   const prevArea = areasData[prevSlug as keyof typeof areasData]
   const nextArea = areasData[nextSlug as keyof typeof areasData]
 
+  // Background image mapeado por slug
+  const bgExtensions: Record<string, string> = {
+    transporte: 'webp',
+    hidreletrica: 'webp',
+    mineracao: 'jpg',
+    subestacoes: 'webp',
+    'energias-renovaveis': 'jpg',
+    'controle-medicao': 'webp',
+  }
+  const bgExt = bgExtensions[params.slug]
+  const bgImagePath = bgExt ? `/images/areas/backgrounds/${params.slug}.${bgExt}` : null
+
   // Verificar se há múltiplas imagens (carrossel)
   const images = (area.aplicacao as any).images || [area.aplicacao.image]
   const imageCaptions = (area.aplicacao as any).imageCaptions || []
@@ -139,6 +151,18 @@ export default function AreaPage({ params }: { params: { slug: string } }) {
 
       {/* Aplicação Section */}
       <section className={styles.aplicacaoSection}>
+        {bgImagePath && (
+          <div className={styles.aplicacaoBg} aria-hidden>
+            <Image
+              src={cdnUrl(bgImagePath)}
+              alt=""
+              fill
+              className={styles.aplicacaoBgImg}
+              priority={false}
+            />
+            <div className={styles.aplicacaoBgOverlay} />
+          </div>
+        )}
         <div className="container">
           <div className={styles.sectionHeader}>
             <h2 className={styles.sectionTitle}>{area.aplicacao.title}</h2>

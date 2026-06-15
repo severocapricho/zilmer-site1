@@ -1,7 +1,7 @@
 'use client'
 
 import { notFound } from 'next/navigation'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { Link } from '@/i18n/routing'
 import styles from './page.module.css'
@@ -58,12 +58,35 @@ function renderText(text: string | undefined | null) {
 // Lista ordenada das áreas para navegação
 const areasOrder = ['transporte', 'hidreletrica', 'mineracao', 'subestacoes', 'energias-renovaveis', 'controle-medicao']
 
+function safeCdnUrl(path: string): string {
+  return cdnUrl(path.replace(/ /g, '%20'))
+}
+
 export default function AreaPage({ params }: { params: { slug: string } }) {
-  console.log('[AreaPage] NEXT_PUBLIC_CDN_URL =', process.env.NEXT_PUBLIC_CDN_URL)
   const locale = useLocale()
-  const isEn = locale === 'en'
-  const areasData = (locale === 'en' ? areasDataEnJson : locale === 'es' ? areasDataEsJson : areasDataPtJson) as AreasDataType
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
+  // Tracks which image indexes should use CDN fallback instead of local path
+  const [cdnFallbacks, setCdnFallbacks] = useState<Set<number>>(new Set())
+  const [heroUseCdn, setHeroUseCdn] = useState(false)
+  // Dynamic data fetched from API (refreshes on client, replacing stale static import)
+  const [dynamicData, setDynamicData] = useState<AreasDataType | null>(null)
+
+  useEffect(() => {
+    fetch('/api/admin/areas')
+      .then(r => r.json())
+      .then((data: AreasDataType) => {
+        setDynamicData(data)
+        // Reset fallbacks when fresh data arrives
+        setCdnFallbacks(new Set())
+        setHeroUseCdn(false)
+        setCurrentImageIndex(0)
+      })
+      .catch(() => {})
+  }, [params.slug])
+
+  const staticData = (locale === 'en' ? areasDataEnJson : locale === 'es' ? areasDataEsJson : areasDataPtJson) as AreasDataType
+  // PT uses dynamic data (admin edits PT only); EN/ES use static import
+  const areasData = (locale !== 'en' && locale !== 'es' && dynamicData) ? dynamicData : staticData
 
   if (!params?.slug) {
     notFound()
@@ -108,31 +131,29 @@ export default function AreaPage({ params }: { params: { slug: string } }) {
     setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length)
   }
 
+  const heroPath = (area.aplicacao as any).heroImage || area.aplicacao.image
+  const heroSrc = heroUseCdn ? safeCdnUrl(heroPath) : heroPath
+
+  const contentPath = images[currentImageIndex]
+  const contentSrc = cdnFallbacks.has(currentImageIndex) ? safeCdnUrl(contentPath) : contentPath
+
   return (
     <div className={styles.page}>
-      {/* DEBUG - remove after confirming locale */}
-      <div style={{ position: 'fixed', bottom: 16, right: 16, background: '#000', color: '#0f0', fontFamily: 'monospace', fontSize: 13, padding: '6px 12px', zIndex: 9999, borderRadius: 4 }}>
-        locale: {locale} | isEn: {String(isEn)}
-      </div>
       {/* Hero Section */}
       <section className={styles.heroSection}>
         <div className={styles.heroBackground}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={(area.aplicacao as any).heroImage || area.aplicacao.image}
+          <Image
+            src={heroSrc}
             alt={area.title}
+            fill
             className={styles.heroImage}
-            style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', top: 0, left: 0 }}
-            onError={e => {
-              const el = e.currentTarget
-              const path = (area.aplicacao as any).heroImage || area.aplicacao.image
-              const cdn = cdnUrl(path)
-              if (el.src !== cdn) el.src = cdn
-            }}
+            priority
+            unoptimized
+            onError={() => { if (!heroUseCdn) setHeroUseCdn(true) }}
           />
           <div className={styles.heroOverlay}></div>
         </div>
-        
+
         {/* Setas de navegação */}
         <Link href={`/areas/${prevSlug}`} className={styles.heroNavArrow} style={{ left: '20px' }} aria-label={locale === 'en' ? `Go to ${prevArea.title}` : locale === 'es' ? `Ir a ${prevArea.title}` : `Ir para ${prevArea.title}`}>
           <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -144,7 +165,7 @@ export default function AreaPage({ params }: { params: { slug: string } }) {
             <polyline points="9 18 15 12 9 6"></polyline>
           </svg>
         </Link>
-        
+
         <div className={styles.heroContent}>
           <div className="container">
             <h1 className={styles.heroTitle}>{area.title}</h1>
@@ -174,20 +195,18 @@ export default function AreaPage({ params }: { params: { slug: string } }) {
             <h2 className={styles.sectionTitle}>{area.aplicacao.title}</h2>
             <div className={styles.titleUnderline}></div>
           </div>
-          
+
           <div className={styles.aplicacaoGrid}>
             <div className={styles.aplicacaoImage}>
               <div className={styles.imageWrapper}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={images[currentImageIndex]}
+                <Image
+                  src={contentSrc}
                   alt={area.aplicacao.title}
+                  fill
+                  unoptimized
                   className={styles.contentImage}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', top: 0, left: 0 }}
-                  onError={e => {
-                    const el = e.currentTarget
-                    const cdn = cdnUrl(images[currentImageIndex])
-                    if (el.src !== cdn) el.src = cdn
+                  onError={() => {
+                    setCdnFallbacks(prev => new Set([...prev, currentImageIndex]))
                   }}
                 />
                 {hasMultipleImages && (
@@ -228,7 +247,6 @@ export default function AreaPage({ params }: { params: { slug: string } }) {
                 <p className={styles.imageCaption}>
                   {(() => {
                     const captionText = hasMultipleImages ? imageCaptions[currentImageIndex] : imageCaption
-                    // Remover tags HTML se existirem
                     if (typeof captionText === 'string') {
                       return captionText.replace(/<[^>]*>/g, '').trim()
                     }
@@ -237,7 +255,7 @@ export default function AreaPage({ params }: { params: { slug: string } }) {
                 </p>
               ) : null}
             </div>
-            
+
             <div className={styles.aplicacaoTextQuadrants}>
               <div className={styles.aplicacaoDescription}>
                 {renderText(area.aplicacao.description)}
@@ -247,17 +265,6 @@ export default function AreaPage({ params }: { params: { slug: string } }) {
         </div>
       </section>
 
-      {/* Seções removidas e arquivadas:
-          - Solução Section (Como Soluciona)
-          - Projetos Específicos Section
-          Código arquivado em: app/areas/[slug]/page.archived.tsx
-      */}
-
     </div>
   )
 }
-
-
-
-
-

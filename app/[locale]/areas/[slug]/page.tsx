@@ -117,12 +117,18 @@ export default function AreaPage({ params }: { params: { slug: string } }) {
       {/* Hero Section */}
       <section className={styles.heroSection}>
         <div className={styles.heroBackground}>
-          <Image
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
             src={(area.aplicacao as any).heroImage || area.aplicacao.image}
             alt={area.title}
-            fill
             className={styles.heroImage}
-            priority
+            style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', top: 0, left: 0 }}
+            onError={e => {
+              const el = e.currentTarget
+              const path = (area.aplicacao as any).heroImage || area.aplicacao.image
+              const cdn = cdnUrl(path)
+              if (el.src !== cdn) el.src = cdn
+            }}
           />
           <div className={styles.heroOverlay}></div>
         </div>
@@ -172,11 +178,17 @@ export default function AreaPage({ params }: { params: { slug: string } }) {
           <div className={styles.aplicacaoGrid}>
             <div className={styles.aplicacaoImage}>
               <div className={styles.imageWrapper}>
-                <Image
-                  src={cdnUrl(images[currentImageIndex])}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={images[currentImageIndex]}
                   alt={area.aplicacao.title}
-                  fill
                   className={styles.contentImage}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', top: 0, left: 0 }}
+                  onError={e => {
+                    const el = e.currentTarget
+                    const cdn = cdnUrl(images[currentImageIndex])
+                    if (el.src !== cdn) el.src = cdn
+                  }}
                 />
                 {hasMultipleImages && (
                   <>

@@ -26,7 +26,7 @@ const TRANSFORMERS: Record<string, string[]> = {
   'mineracao':           ['/images/areas/transformers/mineracao.png'],
   'subestacoes':         ['/images/areas/transformers/subestacoes.png'],
   'energias-renovaveis': ['/images/areas/transformers/energias-renovaveis.png'],
-  'controle-medicao':    [],
+  'controle-medicao':    ['/images/areas/transformers/controle-e-medicao.png'],
 }
 
 /* Overlay per slide — extracted from screenshot analysis */
@@ -130,14 +130,14 @@ export default function AreasAtuacao() {
           {/* Tabs */}
           <nav className={styles.tabs} onMouseLeave={() => setPaused(false)}>
             {slides.map((s, i) => (
-              <button
+              <Link
                 key={s.slug}
-                onClick={() => act(() => setActive(i))}
+                href={`/${s.slug}`}
                 onMouseEnter={() => { setPaused(true); setActive(i); }}
                 className={`${styles.tab} ${i === active ? styles.tabActive : ''}`}
               >
                 {s.data.title}
-              </button>
+              </Link>
             ))}
           </nav>
 

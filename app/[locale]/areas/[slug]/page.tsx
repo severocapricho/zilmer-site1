@@ -118,7 +118,7 @@ export default function AreaPage({ params }: { params: { slug: string } }) {
       <section className={styles.heroSection}>
         <div className={styles.heroBackground}>
           <Image
-            src={cdnUrl((area.aplicacao as any).heroImage || area.aplicacao.image)}
+            src={(area.aplicacao as any).heroImage || area.aplicacao.image}
             alt={area.title}
             fill
             className={styles.heroImage}
@@ -154,7 +154,7 @@ export default function AreaPage({ params }: { params: { slug: string } }) {
         {bgImagePath && (
           <div className={styles.aplicacaoBg} aria-hidden>
             <Image
-              src={cdnUrl(bgImagePath)}
+              src={bgImagePath}
               alt=""
               fill
               className={styles.aplicacaoBgImg}

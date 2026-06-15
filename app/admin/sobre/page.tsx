@@ -291,9 +291,10 @@ export default function AdminSobrePage() {
               <div style={{ position: 'relative', width: '100%', maxWidth: '480px', height: '260px', background: '#e9ecef', borderRadius: '6px', overflow: 'hidden', border: '1px solid #dee2e6' }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={cdnUrl(currentPath)}
+                  src={currentPath}
                   alt="Imagem atual"
                   style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                  onError={e => { (e.target as HTMLImageElement).src = cdnUrl(currentPath) }}
                 />
               </div>
               <p style={{ fontSize: '0.8rem', color: '#666', margin: 0, wordBreak: 'break-all', background: '#fff', padding: '0.4rem 0.6rem', borderRadius: '4px', border: '1px solid #dee2e6', maxWidth: '480px' }}>

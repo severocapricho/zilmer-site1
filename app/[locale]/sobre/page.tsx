@@ -1,9 +1,8 @@
-import { useTranslations } from 'next-intl'
+import { getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/routing'
 import styles from './page.module.css'
-import { cdnUrl } from '@/lib/assets'
-// @ts-ignore
-import sobreDataPt from '@/data/sobre.json'
+import { readFile } from 'fs/promises'
+import { join } from 'path'
 
 function stripHtml(text: string): string {
   return text.replace(/<[^>]*>/g, '').trim()
@@ -22,9 +21,15 @@ function renderText(text: string | undefined | null) {
   )
 }
 
-export default function SobrePage() {
-  const t = useTranslations('about')
-  const principalImage: string = (sobreDataPt as any).principal?.image || '/images/sobre/transformadores-instalacao.jpg'
+export default async function SobrePage() {
+  const t = await getTranslations('about')
+
+  let principalImage = '/images/sobre/transformadores-instalacao.jpg'
+  try {
+    const raw = await readFile(join(process.cwd(), 'data', 'sobre.json'), 'utf-8')
+    const data = JSON.parse(raw)
+    principalImage = data.principal?.image || principalImage
+  } catch {}
 
   return (
     <section className={styles.page}>
@@ -38,7 +43,7 @@ export default function SobrePage() {
           <div className={styles.imageSection}>
             <div className={styles.imageContainer}>
               <img
-                src={cdnUrl(principalImage)}
+                src={principalImage}
                 alt="Transformadores Zilmer em instalação industrial"
                 className={styles.heroImage}
               />

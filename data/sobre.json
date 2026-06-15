@@ -2,7 +2,7 @@
   "principal": {
     "title": "Quem somos",
     "intro": "Com mais de 60 anos de atuação, a Zilmer é uma empresa brasileira consolidada no mercado de transformadores. Atendendo grandes clientes com soluções customizadas em projetos para concessionárias de energia, siderúrgicas, setor petrolífero, mineração, sistemas metroviários, indústrias automotivas, subestações de energia e outros. Desenvolvendo soluções especiais, tanto em aplicações principais quanto auxiliares.\n\nDiante da recente expansão do setor energético global e dos novos desafios tecnológicos, sua capacidade técnica e know-how têm sido amplamente demandados no Brasil e na América do Sul. Reconhecida pela confiabilidade de seus equipamentos e suporte técnico qualificado, a empresa é referência em inovação tecnológica, otimização de processos produtivos e no fortalecimento de parcerias com grandes clientes e parceiros internacionais.",
-    "image": "/images/sobre/transformadores-instalacao.jpg",
+    "image": "/images/sobre/1781201127073_bfb565bd-1fec-47fa-80ee-180d1a4a52f0.png",
     "cards": {
       "historico": {
         "title": "Histórico",
@@ -34,9 +34,21 @@
     "title": "Certificados",
     "description": "A Zilmer Transformadores possui certificações que garantem a qualidade e conformidade de nossos produtos, seguindo os mais altos padrões do mercado.",
     "items": [
-      { "file": "CERTIFICADO ISO.pdf", "title": "Certificado ISO", "type": "pdf" },
-      { "file": "CERTIFICADO LMP.pdf", "title": "Certificado LMP", "type": "pdf" },
-      { "file": "CERTIFICADO PROELCO.pdf", "title": "Certificado PROELCO", "type": "pdf" }
+      {
+        "file": "CERTIFICADO ISO.pdf",
+        "title": "Certificado ISO",
+        "type": "pdf"
+      },
+      {
+        "file": "CERTIFICADO LMP.pdf",
+        "title": "Certificado LMP",
+        "type": "pdf"
+      },
+      {
+        "file": "CERTIFICADO PROELCO.pdf",
+        "title": "Certificado PROELCO",
+        "type": "pdf"
+      }
     ]
   }
 }

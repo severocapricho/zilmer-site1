@@ -5,7 +5,7 @@
       "title": "Aplicación en Sistemas de Transporte",
       "description": "Transformadores Rectificadores\n\nLos transformadores rectificadores tipo seco moldeados en resina epoxi representan la solución ideal para aplicaciones que demandan alta confiabilidad, robustez térmica y seguridad operacional, especialmente en entornos donde el uso de aceite no es deseable. Diseñados para alimentar circuitos rectificadores semiconductores de 6 a 24 pulsos, estos transformadores enfrentan condiciones eléctricas más severas que las encontradas en transformadores convencionales, debido a la presencia de armónicos de alta frecuencia generados por el proceso de conversión CA–CC. La operación de los dispositivos semiconductores introduce componentes armónicas que elevan significativamente las pérdidas por corrientes parásitas (eddy currents) y pérdidas dispersas, provocando calentamiento adicional en los devanados y estructuras metálicas del transformador. Ante este escenario, el transformador tipo seco en resina epoxi debe ser concebido con un conjunto de refinamientos electromagnéticos y térmicos que aseguren estabilidad y longevidad del equipo. Entre los principales elementos de diseño adoptados por Zilmer Ineltec, se destacan: reducción de la densidad de flujo magnético, disminuyendo las pérdidas adicionales provocadas por los armónicos; control riguroso de la densidad de corriente en los conductores, evitando el calentamiento excesivo en régimen de cargas pulsantes; blindaje electrostático entre devanados, atenuando interferencias de alta frecuencia y protegiendo componentes sensibles del sistema rectificador; devanados moldeados en resina epoxi clase F o H, que proporcionan excelente conducción térmica, elevada rigidez dieléctrica y resistencia superior a ambientes contaminados, húmedos o con atmósfera corrosiva; diseño tipo seco intrínsecamente más seguro, eliminando riesgos relacionados con fugas, combustibilidad del aceite y reduciendo las necesidades de mantenimiento. Estas características garantizan que el transformador rectificador tipo seco entregue confiabilidad y desempeño consistente, incluso bajo solicitaciones no lineales típicas de aplicaciones industriales intensivas, como electrólisis, accionamientos de velocidad variable, hornos eléctricos, minería, sistemas de tracción y otros procesos que requieren corriente continua de alta calidad.",
       "image": "/images/areas/transporte/hf_20260204_180552_5d7deabf-613d-4c8e-8948-360df6ea8825.webp",
-      "heroImage": "/images/areas/transporte.jpg",
+      "heroImage": "/images/areas/backgrounds/transporte.webp",
       "heroDescription": "Los transformadores Zilmer son fundamentales en la infraestructura de transporte metropolitano, suministrando energía confiable para sistemas críticos de movilidad urbana.",
       "imageCaption": "TRANSFORMADOR RECTIFICADOR TRIFÁSICO"
     },
@@ -36,7 +36,7 @@
       "onde": "Instalados en salas de máquinas, subestaciones de generación y sistemas de transmisión de energía.",
       "como": "Transforman la energía generada por las turbinas a niveles de tensión adecuados para la transmisión y distribución.",
       "image": "/images/areas/hidreletrica/hf_20260204_170703_8f0f246e-0e78-489a-b931-68934db44f33.webp",
-      "heroImage": "/images/areas/hidreletrica.jpg",
+      "heroImage": "/images/areas/backgrounds/hidreletrica.webp",
       "heroDescription": "Transformadores de alta potencia esenciales para la generación y transmisión de energía hidroeléctrica.",
       "imageCaption": "TRANSFORMADOR DE EXCITACIÓN (BANCO TRIFÁSICO)"
     },
@@ -67,7 +67,7 @@
       "onde": "Instalados en plantas de procesamiento, áreas de extracción, sistemas de transporte de mineral e infraestructura de minas.",
       "como": "Operan en ambientes con alta humedad, polvo, vibraciones y variaciones extremas de temperatura.",
       "image": "/images/areas/mineracao/hf_20260204_172941_49183ca6-fd3a-4643-8ec1-f5aef1f86984.webp",
-      "heroImage": "/images/areas/mineracao.jpg",
+      "heroImage": "/images/areas/backgrounds/mineracao.jpg",
       "heroDescription": "Transformadores robustos diseñados para las condiciones extremas de la minería a cielo abierto.",
       "imageCaption": "TRANSFORMADOR TRIFÁSICO IP-54"
     },
@@ -98,7 +98,7 @@
       "onde": "Instalados en subestaciones de distribución, transmisión y transformación de energía eléctrica.",
       "como": "Transforman tensiones entre diferentes niveles, permitiendo la distribución eficiente de energía a los consumidores.",
       "image": "/images/areas/subestacoes/RAO - VILLARES METALS - 1350 kVA - CENÁRIO.webp",
-      "heroImage": "/images/areas/subestacoes.jpg",
+      "heroImage": "/images/areas/backgrounds/subestacoes.webp",
       "heroDescription": "Transformadores esenciales para la distribución y transmisión de energía en subestaciones.",
       "imageCaption": "REACTOR DE PUESTA A TIERRA ZIG-ZAG"
     },
@@ -129,7 +129,7 @@
       "onde": "Instalados en parques eólicos, plantas solares y sistemas de integración a la red eléctrica.",
       "como": "Conectan la generación renovable a la red, transformando tensiones y garantizando calidad de energía.",
       "image": "/images/areas/energias-renovaveis/hf_20260204_182526_06aaf914-647b-4143-8cef-fd0bacf40d9b.webp",
-      "heroImage": "/images/areas/energias-renovaveis.jpg",
+      "heroImage": "/images/areas/backgrounds/energias-renovaveis.jpg",
       "heroDescription": "Transformadores especializados para la integración de energía eólica y solar a la red eléctrica.",
       "imageCaption": "TRANSFORMADOR TRIFÁSICO ELEVADOR DE ALTA POTENCIA"
     },
@@ -164,7 +164,7 @@
         "/images/areas/controle-medicao/WhatsApp Image 2026-02-03 at 13.45.43.jpeg",
         "/images/areas/controle-medicao/WhatsApp Image 2026-02-03 at 13.48.19.jpeg"
       ],
-      "heroImage": "/images/areas/controle-medicao.jpg",
+      "heroImage": "/images/areas/backgrounds/controle-medicao.webp",
       "heroDescription": "Transformadores de instrumento (tensión y corriente) para protección, control y medición en instalaciones eléctricas.",
       "imageCaption": "TRANSFORMADORES DE CORRIENTE (TC) DE USO EXTERIOR",
       "imageCaptions": [

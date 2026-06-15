@@ -1,7 +1,10 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import styles from './page.module.css'
+import { cdnUrl } from '@/lib/assets'
+
+const IMAGE_FIELDS = new Set(['aplicacao.image', 'aplicacao.heroImage'])
 
 function stripHtml(text: string): string {
   return text.replace(/<[^>]*>/g, '').trim()
@@ -42,6 +45,10 @@ export default function AdminPage() {
   const [editedValue, setEditedValue] = useState<string>('')
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
+
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  const [uploadLoading, setUploadLoading] = useState(false)
 
   useEffect(() => {
     loadAreasData()
@@ -90,17 +97,16 @@ export default function AdminPage() {
       if (response.ok) {
         const updatedData = await response.json()
         setAreasData(updatedData)
-        setMessage({ type: 'success', text: 'Texto salvo com sucesso!' })
-        setTimeout(() => setMessage(null), 3000)
+        showMessage('success', 'Texto salvo com sucesso!')
       } else {
         const errorData = await response.json().catch(() => ({}))
         const errorMessage = errorData.error || errorData.message || 'Erro ao salvar. Tente novamente.'
-        setMessage({ type: 'error', text: errorMessage })
+        showMessage('error', errorMessage)
         console.error('Erro ao salvar:', errorData)
       }
     } catch (error: any) {
       console.error('Erro ao salvar:', error)
-      setMessage({ type: 'error', text: error?.message || 'Erro ao salvar. Tente novamente.' })
+      showMessage('error', error?.message || 'Erro ao salvar. Tente novamente.')
     } finally {
       setLoading(false)
     }
@@ -108,10 +114,19 @@ export default function AdminPage() {
 
   const handleFieldSelect = (field: string) => {
     setSelectedField(field)
+    setSelectedFile(null)
+    if (fileInputRef.current) fileInputRef.current.value = ''
+
     if (selectedArea && areasData[selectedArea]) {
       const area = areasData[selectedArea]
       let value = ''
-      
+
+      if (IMAGE_FIELDS.has(field)) {
+        value = (area.aplicacao as any)[field.split('.')[1]] || ''
+        setEditedValue(value)
+        return
+      }
+
       if (field === 'aplicacao.description') {
         value = stripHtml(area.aplicacao.description)
       } else if (field === 'aplicacao.title') {
@@ -146,6 +161,99 @@ export default function AdminPage() {
     }
   }
 
+  const showMessage = (type: 'success' | 'error', text: string) => {
+    setMessage({ type, text })
+    setTimeout(() => setMessage(null), 3000)
+  }
+
+  const handleImageUpload = async () => {
+    if (!selectedFile || !selectedArea || !selectedField) return
+    setUploadLoading(true)
+    setMessage(null)
+    try {
+      const formData = new FormData()
+      formData.append('file', selectedFile)
+      formData.append('area', selectedArea)
+
+      const uploadRes = await fetch('/api/admin/areas/upload', { method: 'POST', body: formData })
+      if (!uploadRes.ok) throw new Error((await uploadRes.json()).error || 'Erro no upload')
+      const { path } = await uploadRes.json()
+
+      const saveRes = await fetch('/api/admin/areas', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ area: selectedArea, field: selectedField, value: path }),
+      })
+      if (!saveRes.ok) throw new Error('Erro ao salvar caminho')
+      const updated = await saveRes.json()
+      setAreasData(updated)
+      setEditedValue(path)
+      setSelectedFile(null)
+      if (fileInputRef.current) fileInputRef.current.value = ''
+      showMessage('success', 'Imagem enviada e salva com sucesso!')
+    } catch (e: any) {
+      showMessage('error', e?.message || 'Erro ao fazer upload')
+    } finally {
+      setUploadLoading(false)
+    }
+  }
+
+  const renderImageEditor = () => {
+    const currentPath: string = editedValue || ''
+    const label = selectedField === 'aplicacao.heroImage' ? 'Hero (fundo da página)' : 'Imagem da seção de aplicação'
+
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+        <div style={{ padding: '1.25rem', background: '#f8f9fa', borderRadius: '8px', border: '1px solid #dee2e6' }}>
+          <h3 style={{ color: '#003366', margin: '0 0 0.75rem 0', fontSize: '1rem' }}>Imagem Atual — {label}</h3>
+          {currentPath ? (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              <div style={{ position: 'relative', width: '100%', maxWidth: '520px', height: '280px', background: '#e9ecef', borderRadius: '6px', overflow: 'hidden', border: '1px solid #dee2e6' }}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={currentPath}
+                  alt="Imagem atual"
+                  style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                  onError={e => { (e.target as HTMLImageElement).src = cdnUrl(currentPath) }}
+                />
+              </div>
+              <p style={{ fontSize: '0.8rem', color: '#666', margin: 0, wordBreak: 'break-all', background: '#fff', padding: '0.4rem 0.6rem', borderRadius: '4px', border: '1px solid #dee2e6', maxWidth: '520px' }}>
+                {currentPath}
+              </p>
+            </div>
+          ) : (
+            <p style={{ color: '#aaa', margin: 0 }}>Nenhuma imagem definida</p>
+          )}
+        </div>
+
+        <div style={{ padding: '1.25rem', background: '#f8f9fa', borderRadius: '8px', border: '1px solid #dee2e6' }}>
+          <h3 style={{ color: '#003366', margin: '0 0 0.75rem 0', fontSize: '1rem' }}>Trocar Imagem</h3>
+          <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/jpeg,image/png,image/webp,image/gif"
+              onChange={e => setSelectedFile(e.target.files?.[0] || null)}
+              style={{ flex: 1, fontSize: '0.9rem' }}
+            />
+            <button
+              className={styles.saveButton}
+              onClick={handleImageUpload}
+              disabled={!selectedFile || uploadLoading}
+            >
+              {uploadLoading ? 'Enviando...' : 'Upload & Salvar'}
+            </button>
+          </div>
+          {selectedFile && (
+            <p style={{ fontSize: '0.85rem', color: '#666', marginTop: '0.5rem' }}>
+              Arquivo selecionado: <strong>{selectedFile.name}</strong>
+            </p>
+          )}
+        </div>
+      </div>
+    )
+  }
+
   const areaNames: { [key: string]: string } = {
     transporte: 'Transporte',
     hidreletrica: 'Hidrelétrica',
@@ -156,8 +264,10 @@ export default function AdminPage() {
   }
 
   const fieldNames: { [key: string]: string } = {
-    'aplicacao.description': 'Descrição da Aplicação',
+    'aplicacao.image': 'Imagem da Aplicação',
+    'aplicacao.heroImage': 'Imagem do Hero',
     'aplicacao.title': 'Título da Aplicação',
+    'aplicacao.description': 'Descrição da Aplicação',
     'aplicacao.heroDescription': 'Descrição do Hero',
     'aplicacao.imageCaption': 'Legenda da Imagem Principal',
     'aplicacao.imageCaptions': 'Legendas das Imagens (Array)',
@@ -228,6 +338,9 @@ export default function AdminPage() {
                     onClick={() => handleFieldSelect(field)}
                   >
                     {fieldNames[field]}
+                    {IMAGE_FIELDS.has(field) && (
+                      <span style={{ marginLeft: '0.4rem', fontSize: '0.75rem', opacity: 0.7 }}>🖼️</span>
+                    )}
                   </button>
                 ))}
               </div>
@@ -244,42 +357,59 @@ export default function AdminPage() {
                 </h2>
               </div>
               <div className={styles.editorWrapper}>
-                <textarea
-                  value={editedValue || ''}
-                  onChange={(e) => setEditedValue(e.target.value)}
-                  placeholder={selectedField === 'aplicacao.imageCaptions'
-                    ? 'Digite uma legenda por linha.'
-                    : 'Digite o texto aqui...'}
-                  style={{
-                    width: '100%',
-                    minHeight: '220px',
-                    padding: '15px',
-                    border: '1px solid #dee2e6',
-                    borderRadius: '4px',
-                    fontFamily: 'inherit',
-                    fontSize: '1rem',
-                    lineHeight: '1.6',
-                    resize: 'vertical',
-                  }}
-                />
+                {IMAGE_FIELDS.has(selectedField) ? (
+                  renderImageEditor()
+                ) : (
+                  <textarea
+                    value={editedValue || ''}
+                    onChange={(e) => setEditedValue(e.target.value)}
+                    placeholder={selectedField === 'aplicacao.imageCaptions'
+                      ? 'Digite uma legenda por linha.'
+                      : 'Digite o texto aqui...'}
+                    style={{
+                      width: '100%',
+                      minHeight: '220px',
+                      padding: '15px',
+                      border: '1px solid #dee2e6',
+                      borderRadius: '4px',
+                      fontFamily: 'inherit',
+                      fontSize: '1rem',
+                      lineHeight: '1.6',
+                      resize: 'vertical',
+                    }}
+                  />
+                )}
               </div>
-              <div className={styles.editorActions}>
-                <button
-                  className={styles.saveButton}
-                  onClick={handleSave}
-                  disabled={loading}
-                >
-                  {loading ? 'Salvando...' : 'Salvar Alterações'}
-                </button>
-                <a
-                  href={`/areas/${selectedArea}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={styles.previewButton}
-                >
-                  Ver a Página
-                </a>
-              </div>
+              {IMAGE_FIELDS.has(selectedField) ? (
+                <div style={{ marginTop: '1rem' }}>
+                  <a
+                    href={`/areas/${selectedArea}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.previewButton}
+                  >
+                    Ver a Página
+                  </a>
+                </div>
+              ) : (
+                <div className={styles.editorActions}>
+                  <button
+                    className={styles.saveButton}
+                    onClick={handleSave}
+                    disabled={loading}
+                  >
+                    {loading ? 'Salvando...' : 'Salvar Alterações'}
+                  </button>
+                  <a
+                    href={`/areas/${selectedArea}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.previewButton}
+                  >
+                    Ver a Página
+                  </a>
+                </div>
+              )}
             </>
           ) : (
             <div className={styles.placeholder}>

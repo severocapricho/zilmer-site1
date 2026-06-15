@@ -383,7 +383,7 @@ export default function AdminPage() {
               {IMAGE_FIELDS.has(selectedField) ? (
                 <div style={{ marginTop: '1rem' }}>
                   <a
-                    href={`/areas/${selectedArea}`}
+                    href={`/${selectedArea}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={styles.previewButton}
@@ -401,7 +401,7 @@ export default function AdminPage() {
                     {loading ? 'Salvando...' : 'Salvar Alterações'}
                   </button>
                   <a
-                    href={`/areas/${selectedArea}`}
+                    href={`/${selectedArea}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={styles.previewButton}

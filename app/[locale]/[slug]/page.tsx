@@ -1,7 +1,7 @@
 'use client'
 
 import { notFound } from 'next/navigation'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { Link } from '@/i18n/routing'
 import { useLocale } from 'next-intl'
@@ -11,6 +11,10 @@ import areasDataJson from '@/data/areas.json'
 import areasDataEnJson from '@/data/areas.en.json'
 // @ts-ignore
 import areasDataEsJson from '@/data/areas.es.json'
+
+function safeCdnUrl(path: string): string {
+  return cdnUrl(encodeURI(path))
+}
 
 const areasData = areasDataJson as {
   [key: string]: {
@@ -63,7 +67,28 @@ export default function AreaSlugPage({
 }) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const locale = useLocale()
-  const areasData = locale === 'en' ? (areasDataEnJson as typeof areasDataJson) : locale === 'es' ? (areasDataEsJson as typeof areasDataJson) : areasDataJson
+  const [dynamicData, setDynamicData] = useState<typeof areasDataJson | null>(null)
+  const [localFailedPaths, setLocalFailedPaths] = useState<Set<string>>(new Set())
+
+  useEffect(() => {
+    fetch('/api/admin/areas')
+      .then(r => r.json())
+      .then(data => {
+        setDynamicData(data)
+        setLocalFailedPaths(new Set())
+        setCurrentImageIndex(0)
+      })
+      .catch(() => {})
+  }, [params.slug])
+
+  const staticData = locale === 'en' ? (areasDataEnJson as typeof areasDataJson) : locale === 'es' ? (areasDataEsJson as typeof areasDataJson) : areasDataJson
+  const areasData = (locale !== 'en' && locale !== 'es' && dynamicData) ? dynamicData as typeof areasDataJson : staticData
+
+  const markFailed = (path: string) =>
+    setLocalFailedPaths(prev => prev.has(path) ? prev : new Set([...prev, path]))
+
+  const resolvedSrc = (path: string) =>
+    localFailedPaths.has(path) ? safeCdnUrl(path) : path
 
   if (!params?.slug) {
     notFound()
@@ -101,13 +126,19 @@ export default function AreaSlugPage({
       {/* Hero Section */}
       <section className={styles.heroSection}>
         <div className={styles.heroBackground}>
-          <Image
-            src={cdnUrl((area.aplicacao as any).heroImage || area.aplicacao.image)}
-            alt={area.title}
-            fill
-            className={styles.heroImage}
-            priority
-          />
+          {(() => {
+            const heroPath = (area.aplicacao as any).heroImage || area.aplicacao.image
+            return (
+              <Image
+                src={resolvedSrc(heroPath)}
+                alt={area.title}
+                fill
+                className={styles.heroImage}
+                priority
+                onError={() => markFailed(heroPath)}
+              />
+            )
+          })()}
           <div className={styles.heroOverlay}></div>
         </div>
 
@@ -173,12 +204,18 @@ export default function AreaSlugPage({
           <div className={styles.aplicacaoGrid}>
             <div className={styles.aplicacaoImage}>
               <div className={styles.imageWrapper}>
-                <Image
-                  src={cdnUrl(images[currentImageIndex])}
-                  alt={area.aplicacao.title}
-                  fill
-                  className={styles.contentImage}
-                />
+                {(() => {
+                  const contentPath = images[currentImageIndex]
+                  return (
+                    <Image
+                      src={resolvedSrc(contentPath)}
+                      alt={area.aplicacao.title}
+                      fill
+                      className={styles.contentImage}
+                      onError={() => markFailed(contentPath)}
+                    />
+                  )
+                })()}
                 {hasMultipleImages && (
                   <>
                     <button

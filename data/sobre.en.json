@@ -35,8 +35,7 @@
     "description": "Zilmer Transformers holds certifications that guarantee the quality and compliance of our products, in accordance with the highest market standards.",
     "items": [
       { "file": "CERTIFICADO ISO.pdf", "title": "Certificado ISO", "type": "pdf" },
-      { "file": "CERTIFICADO LMP.pdf", "title": "Certificado LMP", "type": "pdf" },
-      { "file": "CERTIFICADO PROELCO.pdf", "title": "Certificado PROELCO", "type": "pdf" }
+      { "file": "CERTIFICADO LMP.pdf", "title": "Certificado LMP", "type": "pdf" }
     ]
   }
 }
